@@ -5,11 +5,20 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>{{ title }}</title>
+    <title>EEG Workbench</title>
+    <link rel="stylesheet" href="{% static "css/base.css" %}" type="text/css">
 </head>
 <body>
-    <h1>{{ title }}</h1>
-    <img src="{% static "images/cpp-logo.svg" %}" alt="Cat">
-    <link rel="stylesheet" href="{% static "css/base.css" %}" type="text/css">
+    <header>
+        <h1>EEG Workbench</h1>
+        <img id="cpp-logo" src="{% static "images/cpp-logo.svg" %}" alt="Cat">
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+        <h1>Footer Stuff Here</h1>
+    </footer>
 </body>
 </html>

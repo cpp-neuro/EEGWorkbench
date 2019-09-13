@@ -1,3 +1,14 @@
-body{
-    background-color: green;
+#cpp-logo{
+    height: 10em;
+    width: auto;
+}
+
+header{
+    min-height: 30mm;
+    background-color: #06ffab;
+}
+
+footer{
+    min-height: 30mm;
+    background-color: #06ffab;
 }
