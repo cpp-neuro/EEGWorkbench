@@ -1,3 +1,8 @@
+#cpp-logo{
+    height: 10em;
+    width: auto;
+}
+
 #container {
 		min-height:100%;
 		position:relative;
@@ -141,6 +146,6 @@ DropDown Menu
   display: block;
 }
 
-body{
-    background-color: green;
+body {
+  background-color: green;
 }
