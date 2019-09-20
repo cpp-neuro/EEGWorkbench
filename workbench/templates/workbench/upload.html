@@ -1,5 +1,12 @@
 {% extends 'workbench/base.html' %}
 
 {% block content %}
-    <h1>Content for /upload</h1>
+    <form method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="file" name="file">
+        <button type="submit">Upload</button>
+    </form>
+
+    <p>{{ uploaded_file_url }}</p>
 {% endblock %}
