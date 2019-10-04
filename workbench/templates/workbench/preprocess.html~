@@ -3,14 +3,18 @@
 {% block content %}
 {% load static %}
     <h1>Content for /preprocess</h1>
-<form method="post" action="{% url 'preprocess' %}" enctype="multipart/form-data">
+    <script src="{% static "js/dygraph-combined.js" %}"></script>
+	<script src="{% static "js/jquery-3.1.1.min.js" %}" ></script>
+	<script src="{% static "js/workbench.js" %}" ></script>
+
+<form method="post" action="{% url 'preprocess_file' %}" enctype="multipart/form-data">
     <input type="button" value="PP1" id="countButton" />
 
     <p>The button was pressed <span id="displayCount">0</span> times.</p>
 
     <script type="text/javascript">
       var count = 0;
-      var button = document.getElementById("countButton")
+      var button = document.getElementById("countButton");
       var display = document.getElementById("displayCount");
 
       button.onclick = function(){
