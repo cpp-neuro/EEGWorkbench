@@ -34,11 +34,10 @@ def classify_page(request):
 
 
 def upload_file(request):
-    if request.method == 'POST' and request.FILES['file']:
+    if request.method == 'POST' and 'file' in request.FILES.keys():
         file = request.FILES['file']
         fs = FileSystemStorage(location=UPLOAD_DIR)
         filename = fs.save(file.name, file)
         uploaded_file_url = fs.url(filename)
-        return render(request, 'workbench/upload.html', {'uploaded_file_url': uploaded_file_url})
-    print("Not saved")
+        return redirect('upload', {'uploaded_file_url': uploaded_file_url})
     return redirect('upload')
