@@ -53,7 +53,7 @@ class WorkbenchData:
         s += "{}: {}\n".format(CLASSIFICATION_RESULTS_KEY, self.classification_results)
         return s
 
-    def export_json(self):
+    def to_json(self):
         data = dict()
         data[VERSION_KEY] = self.version
         data[SAMPLE_RATE_KEY] = self.sample_rate
@@ -66,5 +66,15 @@ class WorkbenchData:
         data[CLASSIFICATION_DATA_KEY] = self.classification_data
         data[CLASSIFICATION_RESULTS_KEY] = self.classification_results
 
-        with open("{}_export.json".format(self.set_name), 'w') as f:
-            json.dump(data, f)
+        return json.dumps(data)
+
+    def get_raw_eeg_stats(self):
+        stats = dict()
+
+        # return key value pairs where
+        # key = sensor
+        # value = number of data points
+        for key in self.raw_eeg_data.keys():
+            stats[key] = len(self.raw_eeg_data[key])
+
+        return stats

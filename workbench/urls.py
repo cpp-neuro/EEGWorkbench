@@ -9,4 +9,6 @@ urlpatterns = [
     path('feature_extract/', views.feature_extract_page, name='feature_extract'),
     path('classify/', views.classify_page, name='classify'),
     path('upload_file/', views.upload_file, name='upload_file'),
+    path('load_sensors/', views.load_sensors, name='load_sensors'),
+
 ]

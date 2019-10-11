@@ -35,16 +35,22 @@
 
 	}
 
-	// determine which set the user loads and load it in
+	// load the available sensors based on the
+	// eeg data objects already uploaded to the
+	// server
 	function load_eeg_set(e) {
 		var bttn_id	= e.currentTarget.id;
-		var source_sel	= "#eeg-source-select";
-		var target_sel	= "#eeg-target-select";
-		var eeg_source_tbl = "#eeg-source-set";
-		var eeg_target_tbl = "#eeg-target-set";
+		var source_sel	= "#eeg-source-select"; // ID of source selection field
+		var target_sel	= "#eeg-target-select"; // ID of target selection field
+		var eeg_source_tbl = "#eeg-source-set"; // ID of source sensor table display
+		var eeg_target_tbl = "#eeg-target-set"; // ID of target sensor table display
 		var eeg_set = "";
-	
+
+		// holds the GET request parameters sent to the server
 		var get_params = {};
+
+		// determine which set was being loaded in
+		// the option value as the value to the key 'file'
 		if ( bttn_id === "eeg-source-load-bttn") {
 			get_params = { file: $(source_sel).val() };
 			eeg_set = "source";
@@ -53,55 +59,51 @@
 			get_params = { file: $(target_sel).val() };
 			eeg_set = "target";
 		}
-	
-		$.ajax({url: "/json", 
+
+		// send a GET request to retrieve sensor statistics
+		$.ajax({url: "/load_sensors",
 			method: "GET", 
 			data: get_params, 
-			dataType: "json"}).done( function (d) {
-				var sensors = ["FP1"];
-				
-				if (eeg_set === "source" ) {
+			dataType: "json"})
+			.done( function (d) {
+
+			    // parse the response from the server
+				var stats = JSON.parse(JSON.stringify(d));
+
+				// clear the area where the data belongs
+				if (eeg_set === "source") {
 					$(eeg_source_tbl + " > tbody").empty();
 				}
 				else if (eeg_set === "target") {
 					$(eeg_target_tbl + " > tbody").empty();
 				}
 
-				$(d.data.data).each(function(i,e) { 
-					for (var s = 0; s < sensors.length; s += 1) {
-						
-						if (!e[sensors[s]]) {
-							continue;
-						}
+				// display the data recieved from the server
+				for(var sensor in stats){
 
-						var tr_html = "<td>" + sensors[s] + "</td>" + 
-								"<td>" + i + 
-								"(" + 
-								e[sensors[s]].length + 
-								")</td>" +
+						// craft table html items to hold the received data
+						var tr_html = "<td>" + sensor + "</td>" +
+								"<td>" + stats[sensor] + "</td>" +
 								'<td><input type="checkbox" name="' +
 								eeg_set + '_self" value="' +
-								eeg_set + '_' + sensors[s] + '-' +  
-								i + '" /></td>' +
-								'<td><input type="radio" name="' + 
+								eeg_set + '_' + sensor + '-' +
+								stats[sensor] + '" /></td>' +
+								'<td><input type="radio" name="' +
 								eeg_set + '_cross" value="' +
-								eeg_set + '_' + sensors[s] + '-' 
-								+ i + '" /></td>';
+								eeg_set + '_' + sensor + '-'
+								+ stats[sensor] + '" /></td>';
 
-						var new_tr = $('<tr>', { html: tr_html})
-						
+						var new_tr = $('<tr>', { html: tr_html});
+
+						// place the html in the correct section
 						if (eeg_set === "source" ) {
 							$(eeg_source_tbl + " > tbody").append(new_tr);
 						}
 						else if (eeg_set === "target") {
 							$(eeg_target_tbl + " > tbody").append(new_tr);
 						}
-
-					}
-					
-				} );	
+				}
 			});
-		
 	}
 
 	function format_csv(chart_data) {
