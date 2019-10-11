@@ -3,9 +3,5 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
-<<<<<<< HEAD
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.5" project-jdk-type="Python SDK" />
-=======
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.5 (EEGWorkbench)" project-jdk-type="Python SDK" />
->>>>>>> f2104e6b85950cd2eeb22da38f3d8c07e5ac1ad0
 </project>

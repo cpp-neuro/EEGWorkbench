@@ -1,7 +1,15 @@
 import json
-from datastructures import *
+from workbench.processing.datastructures import *
 
-def parse_json(loaded_json):
+def parse_json(uploaded_file):
+
+    # open the uploaded file
+    f = uploaded_file.open()
+
+    # convert uploaded data to json
+    loaded_json = json.loads(f.read().decode('utf8'), 'utf8')
+
+    # create container to hold parsed json data
     wb_data = WorkbenchData()
 
     # read in the data from the loaded dictionary
@@ -73,129 +81,131 @@ def parse_json(loaded_json):
 
     return wb_data
 
-version = 1
-sample_rate = 128
-device_id = "EMOTIVPRO"
-record_timestamp = "2012-04-23T18:25:43.511Z"
-raw_eeg_data = {"AF3": [0, 1, 0, -1, 0], "AF4": [1, 0, -1, 0, 1]}
-source_tf_data = {
-    "trial 1": {
-        "AF3": {
-            "Alpha": [0, 1, 0, 1, 0],
-            "Beta": [1, 0, 1, 0, 1]
-        },
-        "AF4": {
-            "Alpha": [0, 1, 0, 1, 0],
-            "Beta": [1, 0, 1, 0, 1]
-        },
-        "time": [5, 10, 15, 20, 25]
-    },
-    "trial 2": {
-        "AF3": {
-            "Alpha": [0, 2, 0, 2, 0],
-            "Beta": [2, 0, 2, 0, 2]
-        },
-        "AF4": {
-            "Alpha": [0, 2, 0, 2, 0],
-            "Beta": [2, 0, 2, 0, 2]
-        },
-        "time": [6, 12, 18, 24, 32]
-    }
-}
-target_tf_data = {
-    "trial 1": {
-        "AF3": {
-            "Alpha": [0, 1, 0, 1, 0],
-            "Beta": [1, 0, 1, 0, 1]
-        },
-        "AF4": {
-            "Alpha": [0, 1, 0, 1, 0],
-            "Beta": [1, 0, 1, 0, 1]
-        },
-        "time": [5, 10, 15, 20, 25]
-    },
-    "trial 2": {
-        "AF3": {
-            "Alpha": [0, 2, 0, 2, 0],
-            "Beta": [2, 0, 2, 0, 2]
-        },
-        "AF4": {
-            "Alpha": [0, 2, 0, 2, 0],
-            "Beta": [2, 0, 2, 0, 2]
-        },
-        "time": [6, 12, 18, 24, 32]
-    }
-}
-cross_tf_data = {
-    "source": {
-        "AF3": {
-            "Alpha": [0, 1, 0, 1, 0],
-            "Beta": [1, 0, 1, 0, 1]
-        },
-        "AF4": {
-            "Alpha": [0, 1, 0, 1, 0],
-            "Beta": [1, 0, 1, 0, 1]
-        },
-        "time": [5, 10, 15, 20, 25]
-    },
-    "target": {
-        "AF3": {
-            "Alpha": [0, 2, 0, 2, 0],
-            "Beta": [2, 0, 2, 0, 2]
-        },
-        "AF4": {
-            "Alpha": [0, 2, 0, 2, 0],
-            "Beta": [2, 0, 2, 0, 2]
-        },
-        "time": [6, 12, 18, 24, 32]
-    }
-}
-classification_data = {
-    "train": [
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3]
-    ],
-    "validation": [
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3]
-    ],
-    "test": [
-        [1, 2, 3],
-        [1, 2, 3],
-        [1, 2, 3]
-    ]
-}
-classification_results = [2, 4, 6, 8, 10]
+# test code for parser
 
-data_object = {
-    VERSION_KEY: version,
-    SAMPLE_RATE_KEY: sample_rate,
-    DEVICE_ID_KEY: device_id,
-    RECORD_TIMESTAMP_KEY: record_timestamp,
-    RAW_EEG_DATA_KEY: raw_eeg_data,
-    SOURCE_TF_DATA_KEY: source_tf_data,
-    TARGET_TF_DATA_KEY: target_tf_data,
-    CROSS_TF_DATA_KEY: cross_tf_data,
-    CLASSIFICATION_DATA_KEY: classification_data,
-    CLASSIFICATION_RESULTS_KEY: classification_results
-}
-
-contrived = json.dumps(data_object)
-
-with open("example.json", 'w') as json_file:
-    json.dump(
-        contrived, json_file, sort_keys=False, indent=4, ensure_ascii=False
-    )
-
-with open("example.json", 'r') as json_file:
-    loaded = json.load(json_file) # read json as str
-    loaded = json.loads(loaded)   # convert string to dict
-
-wb_data = parse_json(loaded)
-
-print(wb_data)
+# version = 1
+# sample_rate = 128
+# device_id = "EMOTIVPRO"
+# record_timestamp = "2012-04-23T18:25:43.511Z"
+# raw_eeg_data = {"AF3": [0, 1, 0, -1, 0], "AF4": [1, 0, -1, 0, 1]}
+# source_tf_data = {
+#     "trial 1": {
+#         "AF3": {
+#             "Alpha": [0, 1, 0, 1, 0],
+#             "Beta": [1, 0, 1, 0, 1]
+#         },
+#         "AF4": {
+#             "Alpha": [0, 1, 0, 1, 0],
+#             "Beta": [1, 0, 1, 0, 1]
+#         },
+#         "time": [5, 10, 15, 20, 25]
+#     },
+#     "trial 2": {
+#         "AF3": {
+#             "Alpha": [0, 2, 0, 2, 0],
+#             "Beta": [2, 0, 2, 0, 2]
+#         },
+#         "AF4": {
+#             "Alpha": [0, 2, 0, 2, 0],
+#             "Beta": [2, 0, 2, 0, 2]
+#         },
+#         "time": [6, 12, 18, 24, 32]
+#     }
+# }
+# target_tf_data = {
+#     "trial 1": {
+#         "AF3": {
+#             "Alpha": [0, 1, 0, 1, 0],
+#             "Beta": [1, 0, 1, 0, 1]
+#         },
+#         "AF4": {
+#             "Alpha": [0, 1, 0, 1, 0],
+#             "Beta": [1, 0, 1, 0, 1]
+#         },
+#         "time": [5, 10, 15, 20, 25]
+#     },
+#     "trial 2": {
+#         "AF3": {
+#             "Alpha": [0, 2, 0, 2, 0],
+#             "Beta": [2, 0, 2, 0, 2]
+#         },
+#         "AF4": {
+#             "Alpha": [0, 2, 0, 2, 0],
+#             "Beta": [2, 0, 2, 0, 2]
+#         },
+#         "time": [6, 12, 18, 24, 32]
+#     }
+# }
+# cross_tf_data = {
+#     "source": {
+#         "AF3": {
+#             "Alpha": [0, 1, 0, 1, 0],
+#             "Beta": [1, 0, 1, 0, 1]
+#         },
+#         "AF4": {
+#             "Alpha": [0, 1, 0, 1, 0],
+#             "Beta": [1, 0, 1, 0, 1]
+#         },
+#         "time": [5, 10, 15, 20, 25]
+#     },
+#     "target": {
+#         "AF3": {
+#             "Alpha": [0, 2, 0, 2, 0],
+#             "Beta": [2, 0, 2, 0, 2]
+#         },
+#         "AF4": {
+#             "Alpha": [0, 2, 0, 2, 0],
+#             "Beta": [2, 0, 2, 0, 2]
+#         },
+#         "time": [6, 12, 18, 24, 32]
+#     }
+# }
+# classification_data = {
+#     "train": [
+#         [1, 2, 3],
+#         [1, 2, 3],
+#         [1, 2, 3]
+#     ],
+#     "validation": [
+#         [1, 2, 3],
+#         [1, 2, 3],
+#         [1, 2, 3]
+#     ],
+#     "test": [
+#         [1, 2, 3],
+#         [1, 2, 3],
+#         [1, 2, 3]
+#     ]
+# }
+# classification_results = [2, 4, 6, 8, 10]
+#
+# data_object = {
+#     VERSION_KEY: version,
+#     SAMPLE_RATE_KEY: sample_rate,
+#     DEVICE_ID_KEY: device_id,
+#     RECORD_TIMESTAMP_KEY: record_timestamp,
+#     RAW_EEG_DATA_KEY: raw_eeg_data,
+#     SOURCE_TF_DATA_KEY: source_tf_data,
+#     TARGET_TF_DATA_KEY: target_tf_data,
+#     CROSS_TF_DATA_KEY: cross_tf_data,
+#     CLASSIFICATION_DATA_KEY: classification_data,
+#     CLASSIFICATION_RESULTS_KEY: classification_results
+# }
+#
+# contrived = json.dumps(data_object)
+#
+# with open("example.json", 'w') as json_file:
+#     json.dump(
+#         contrived, json_file, sort_keys=False, indent=4, ensure_ascii=False
+#     )
+#
+# with open("example.json", 'r') as json_file:
+#     loaded = json.load(json_file) # read json as str
+#     loaded = json.loads(loaded)   # convert string to dict
+#
+# wb_data = parse_json(loaded)
+#
+# print(wb_data)
 
 
 

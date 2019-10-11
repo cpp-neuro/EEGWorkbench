@@ -1,3 +1,5 @@
+import json
+
 VERSION_KEY = "version"
 SAMPLE_RATE_KEY = "sample_rate"
 DEVICE_ID_KEY = "device_id"
@@ -9,10 +11,12 @@ CROSS_TF_DATA_KEY = "cross_tf_data"
 CLASSIFICATION_DATA_KEY = "classification_data"
 CLASSIFICATION_RESULTS_KEY = "classification_results"
 
+
 class WorkbenchData:
     def __init__(
             self,
-            version=None,
+            set_name="workbenchdata",
+            version=1,
             sample_rate=None,
             device_id=None,
             record_timestamp=None,
@@ -23,6 +27,7 @@ class WorkbenchData:
             classification_data=None,
             classification_results=None
     ):
+        self.set_name = set_name                             # name of imported or exported file
         self.version = version
         self.sample_rate = sample_rate
         self.device_id = device_id
@@ -48,3 +53,18 @@ class WorkbenchData:
         s += "{}: {}\n".format(CLASSIFICATION_RESULTS_KEY, self.classification_results)
         return s
 
+    def export_json(self):
+        data = dict()
+        data[VERSION_KEY] = self.version
+        data[SAMPLE_RATE_KEY] = self.sample_rate
+        data[DEVICE_ID_KEY] = self.device_id
+        data[RECORD_TIMESTAMP_KEY] = self.record_timestamp
+        data[RAW_EEG_DATA_KEY] = self.raw_eeg_data
+        data[SOURCE_TF_DATA_KEY] = self.source_tf_data
+        data[TARGET_TF_DATA_KEY] = self.target_tf_data
+        data[CROSS_TF_DATA_KEY] = self.cross_tf_data
+        data[CLASSIFICATION_DATA_KEY] = self.classification_data
+        data[CLASSIFICATION_RESULTS_KEY] = self.classification_results
+
+        with open("{}_export.json".format(self.set_name), 'w') as f:
+            json.dump(data, f)
