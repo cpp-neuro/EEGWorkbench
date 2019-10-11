@@ -35,6 +35,7 @@
 
 	}
 
+	// determine which set the user loads and load it in
 	function load_eeg_set(e) {
 		var bttn_id	= e.currentTarget.id;
 		var source_sel	= "#eeg-source-select";
@@ -307,6 +308,7 @@
 		var act = "compute";
 		var export_json = 0;
 
+		// make decision to export the data
 		if ( b.currentTarget.id.indexOf("exportjson") > 0) {
 			export_json = 1;
 			
@@ -316,45 +318,66 @@
 		}
 
 		//source params
-		var source_file		= $("#eeg-source-select").val();
-		var source_eegs		= [];
-		var source_cross	= "";
+		var source_file		= $("#eeg-source-select").val(); // source selection drop down value
+		var source_eegs		= [];                            // holds source eeg filenames
+		var source_cross	= "";                            // holds the source cross eeg filename
+
+		// for each set in the source list with a checked box, split the set and
+		// add it to the source filenames
 	 	$("#eeg-source-set input[type=checkbox]:checked").each(function(i,e) {
 				var es = e.value.split('_');
 				source_eegs.push(es[1]);
 			});
 
+	 	// for the set with the radio button selected, split and assign it
+		// as the source_cross
 	 	$("#eeg-source-set input[type=radio]:checked").each(function(i,e) {
 				var es = e.value.split('_');
 				source_cross = es[1];
 			});
 
 		//target params
-		var target_file		= $("#eeg-target-select").val();
-		var target_eegs 	= [];
-		var target_cross	= "";
+		var target_file		= $("#eeg-target-select").val(); // target selection drop down value
+		var target_eegs 	= [];                            // holds target eeg filenames
+		var target_cross	= "";                            // holds the target cross eeg filename
+
+		// for each set in the target list with a checked box, format the value
+		// and add it to the target filenames
 		$("#eeg-target-set input[type=checkbox]:checked").each(function(i,e) {
 				var es = e.value.split('_');
 				target_eegs.push(es[1]);
 			});
 
+		// for the set with the radio button selected in the target list, format
+		// the value and set it as the target cross filename
 	 	$("#eeg-target-set input[type=radio]:checked").each(function(i,e) {
 				var es = e.value.split('_');
 				target_cross = es[1];
 			});
 
 		//cross similarity params
+
+		// for each frequency band selected in the set of available
+		// frequency bands, add it to desired frequency bands used
+		// for cross analysis
 		var featband_param	= [];
 		$("input:checkbox[name=feature_band]:checked").each( function(i,e) {
 			featband_param.push(e.value); } );
 
+		// for each feature in the list of available features, add it
+		// to the desired features used for cross analysis
 		var feature_param	= [];
 		$("input:checkbox[name=feature]:checked").each( function(i,e) { 
 			feature_param.push(e.value); });
 
+		// set the preprocessing algorithm
 		var prefreq_param	= $("#eeg-prefreq-select").val();
+
+		// set the desired classification algorithm
 		//var classify_param	= $("#eeg-classify-select").val();
 
+		// create a dictionary from the data that was
+		// just calculated
 		var eeg_params = { src: source_file, 
 			src_eegs: source_eegs,
 			src_cross: source_cross,
@@ -367,6 +390,9 @@
 			action: act };
 			//, classify: classify_param };
 
+
+			// skipped analysis
+			// TODO: analyze this block of code
 			if ( export_json === 1) {
 				console.info(eeg_params);
 				for ( var k in eeg_params ) {
@@ -407,8 +433,9 @@
 				//b.preventDefault();
 			
 			}
+			// if the compute button was pressed
 			else {
-				$.ajax({ url: "/json", 
+				$.ajax({ url: "/json",
 					method: "POST",
 					data: eeg_params}).done(function(edata) { 
 							if (act === "compute") {
@@ -424,6 +451,8 @@
 
 	// page load (i.e. 'ready')
 	function page_init() {
+
+		// initialize buttons
 		var eeg_source_bttn	= "#eeg-source-load-bttn";
 		var eeg_target_bttn	= "#eeg-target-load-bttn";
 		var eeg_compute_bttn	= "#eeg-compute-bttn";
@@ -433,7 +462,8 @@
 		var target_chart_bttn	= "#target-self-bttn";
 		var cross_chart_bttn	= "#eeg-cross-bttn";
 
-		$.ajax({url: "/json"}).done(refresh_listing);
+		// ? grab preloaded json files ?
+		// $.ajax({url: "/json"}).done(refresh_listing);
 
 		$("#band-filters input[type=radio]").each(function(i,e){ $(e).click(switch_chart_band); });
 		$(eeg_compute_bttn).click(compute_eeg);

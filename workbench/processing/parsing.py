@@ -1,7 +1,7 @@
 import json
 from workbench.processing.datastructures import *
 
-def parse_json(uploaded_file):
+def parse_json(set_name, uploaded_file):
 
     # open the uploaded file
     f = uploaded_file.open()
@@ -10,7 +10,7 @@ def parse_json(uploaded_file):
     loaded_json = json.loads(f.read().decode('utf8'), 'utf8')
 
     # create container to hold parsed json data
-    wb_data = WorkbenchData()
+    wb_data = WorkbenchData(set_name=set_name)
 
     # read in the data from the loaded dictionary
     # if key does not exists then skip the field

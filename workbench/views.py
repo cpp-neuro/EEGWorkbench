@@ -16,7 +16,13 @@ def index(request):
     return redirect('upload')
 
 def upload_page(request, uploaded_file_url=""):
-    return render(request, 'workbench/upload.html', {'uploaded_file_url': uploaded_file_url})
+    return render(
+        request, 'workbench/upload.html',
+        {
+            "uploaded_file_url": uploaded_file_url,
+            "data_sets": data_sets
+        }
+    )
 
 def preprocess_page(request):
     return render(request, 'workbench/preprocess.html')
@@ -37,7 +43,8 @@ def classify_page(request):
 def upload_file(request):
     if request.method == 'POST' and 'file' in request.FILES.keys():
         file = request.FILES['file']
-        data_sets.append(parse_json(file))
-        print(data_sets[0])
+        new_data_set = parse_json(file.name, file)
+        data_sets.append(new_data_set)
+        print(data_sets[0].set_name)
         return redirect('upload')
     return redirect('upload')

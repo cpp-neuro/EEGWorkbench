@@ -427,9 +427,14 @@
 				<h3>Source</h3>
 					<form class="pure-form" id="eeg-source-form" >
 						<fieldset>
-						<select class="u-full-width" id="eeg-source-select"></select>
+						<select class="u-full-width" id="eeg-source-select">
+                            {# add options currently loaded in to the webpage #}
+                            {% for data_set in data_sets %}
+                                <option value={{ forloop.counter0 }}>{{ data_set.set_name }}</option>
+                            {% endfor %}
+                        </select>
 						<button type="button" class="pure-button"
-							id="eeg-source-load-bttn" >load</button>
+							id="eeg-source-load-bttn" >view</button>
 						</fieldset>
 					</form>
 					<div id="eeg-source-set-wrap" >
@@ -451,9 +456,14 @@
 				<h3>Target</h3>
 					<form class="pure-form" id="eeg-target-form" >
 					<fieldset>
-						<select class="" id="eeg-target-select"></select>
+						<select class="" id="eeg-target-select">
+                            {# add options currently loaded in to the webpage #}
+                            {% for data_set in data_sets %}
+                                <option value={{ forloop.counter0 }}>{{ data_set.set_name }}</option>
+                            {% endfor %}
+                        </select>
 						<button type="button" class="pure-button"
-							id="eeg-target-load-bttn" >load</button>
+							id="eeg-target-load-bttn" >view</button>
 					</fieldset>
 					</form>
 					<div id="eeg-target-set-wrap" >
