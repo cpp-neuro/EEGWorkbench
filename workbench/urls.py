@@ -10,5 +10,6 @@ urlpatterns = [
     path('classify/', views.classify_page, name='classify'),
     path('upload_file/', views.upload_file, name='upload_file'),
     path('load_sensors/', views.load_sensors, name='load_sensors'),
+    path('get_sensor_data', views.get_sensor_data, name='get_sensor_data'),
 
 ]

@@ -78,3 +78,6 @@ class WorkbenchData:
             stats[key] = len(self.raw_eeg_data[key])
 
         return stats
+
+    def get_raw_sensor_data(self, sensor):
+        return self.raw_eeg_data[sensor]

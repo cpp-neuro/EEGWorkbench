@@ -327,15 +327,31 @@
 		// for each set in the source list with a checked box, split the set and
 		// add it to the source filenames
 	 	$("#eeg-source-set input[type=checkbox]:checked").each(function(i,e) {
-				var es = e.value.split('_');
-				source_eegs.push(es[1]);
-			});
+
+	 			// extract the sensor tag
+	 			var es = e.value.split('_').slice(1);
+	 			es = es.join('_');
+				es = es.split('-').slice(0,-1);
+				es = es.join('-');
+
+				// save the sensor to send to server
+				source_eegs.push(es);
+
+	 		});
 
 	 	// for the set with the radio button selected, split and assign it
 		// as the source_cross
 	 	$("#eeg-source-set input[type=radio]:checked").each(function(i,e) {
-				var es = e.value.split('_');
-				source_cross = es[1];
+
+	 			// extract the sensor tag
+				var es = e.value.split('_').slice(1);
+				es = es.join('_');
+				es = es.split('-').slice(0,-1);
+				es = es.join('-');
+
+				// save the sensor to send to server
+				source_cross = es;
+
 			});
 
 		//target params
@@ -346,15 +362,31 @@
 		// for each set in the target list with a checked box, format the value
 		// and add it to the target filenames
 		$("#eeg-target-set input[type=checkbox]:checked").each(function(i,e) {
-				var es = e.value.split('_');
-				target_eegs.push(es[1]);
+
+				// extract the sensor tag
+				var es = e.value.split('_').slice(1);
+				es = es.join('_');
+				es = es.split('-').slice(0,-1);
+				es = es.join('-');
+
+				// save the sensor to send to the server
+				target_eegs.push(es);
+
 			});
 
 		// for the set with the radio button selected in the target list, format
 		// the value and set it as the target cross filename
 	 	$("#eeg-target-set input[type=radio]:checked").each(function(i,e) {
-				var es = e.value.split('_');
-				target_cross = es[1];
+
+	 			// extract the sensor tag
+				var es = e.value.split('_').slice(1);
+				es = es.join('_');
+				es = es.split('-').slice(0,-1);
+				es = es.join('-');
+
+				// save the sensor to send to the server
+				target_cross = es;
+
 			});
 
 		//cross similarity params
@@ -437,11 +469,17 @@
 			}
 			// if the compute button was pressed
 			else {
-				$.ajax({ url: "/json",
-					method: "POST",
-					data: eeg_params}).done(function(edata) { 
+				$.ajax({ url: "/get_sensor_data",
+					method: "GET",
+					data: eeg_params}).done(function(r) {
+							var response = JSON.parse(JSON.stringify(r));
+
+							console.log(response);
+
+							// TODO: discern the format of current eeg hashmap
+							alert("Format current EEG data variable correctly in line 480")
 							if (act === "compute") {
-								current_eeg = edata;
+								current_eeg = response;
 								init_charts();
 							} else {
 								console.info(edata);
