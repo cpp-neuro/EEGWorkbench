@@ -7,7 +7,7 @@ def parse_json(set_name, uploaded_file):
     f = uploaded_file.open()
 
     # convert uploaded data to json
-    loaded_json = json.loads(f.read().decode('utf8'), 'utf8')
+    loaded_json = json.loads(f.read().decode('utf8'))
 
     # create container to hold parsed json data
     wb_data = WorkbenchData(set_name=set_name)
