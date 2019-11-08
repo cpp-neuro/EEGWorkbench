@@ -647,14 +647,13 @@
 					-->
 					<p></p>
 					<form class="pure-form" id="eeg-compute-form"
-						method="post" action="/json" >
-					<button id="eeg-compute-bttn" type="button"
-						class="pure-button button-success" >Compute</button>
-					<input type="submit" id="eeg-exportjson-bttn"
-						class="pure-button button-secondary" value="Export JSON" />
+						method="post" action="{% url 'compute_statistics' %}" >
+					    <button id="eeg-compute-bttn" type="button"
+                                class="pure-button button-success">Compute</button>
+					    <input type="submit" id="eeg-export-bttn"
+					    	class="pure-button button-secondary" value="Export JSON" />
 					</form>
 				</div>
-
 			</div>
 		</div>
 

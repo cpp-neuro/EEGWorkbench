@@ -47,19 +47,24 @@ def upload_file(request):
 
     if request.method == 'POST' and 'file' in request.FILES.keys():
         file = request.FILES['file']
-        new_data_set = parsing.parse_json(file.name, file)
+        new_data_set = parsing.get_workbenchdata_object_from_json(file.name, file)
         data_sets.append(new_data_set)
         return redirect('upload')
     return redirect('upload')
 
+
+# todo: switch to source and target data instead of raw eeg
 def load_sensors(request):
     if request.method == "GET" and request.is_ajax():
         index = int(request.GET["file"])
 
-        return JsonResponse(data_sets[index].get_raw_eeg_stats())
+        return JsonResponse(data_sets[index].get_raw_eeg_lengths_as_dictionary())
 
-def get_sensor_data(request):
+
+def compute_statistics(request):
     if request.method == "GET" and request.is_ajax():
+
+        query_params = request.GET
 
         # object to be returned
         raw_eeg = {"src": dict(), "tgt": dict()}
@@ -70,17 +75,16 @@ def get_sensor_data(request):
 
         # extract the requested sensor names
         try:
-            src_sensors = request.GET.getlist("src_eegs[]")
+            src_sensors = query_params.getlist("src_eegs[]")
         except Exception as e:
             print(e)
 
         try:
-            tgt_sensors = request.GET.getlist("tgt_eegs[]")
+            tgt_sensors = query_params.getlist("tgt_eegs[]")
         except Exception as e:
             print(e)
 
-        # print(src_sensors)
-        # print(tgt_sensors)
+
 
         print(request.GET)
 

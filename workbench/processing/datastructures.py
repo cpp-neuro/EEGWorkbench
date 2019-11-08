@@ -1,6 +1,7 @@
 import json
 import mne
 import numpy as np
+import matplotlib.pyplot as plt
 
 VERSION_KEY = "version"
 SAMPLE_RATE_KEY = "sample_rate"
@@ -70,16 +71,29 @@ class WorkbenchData:
 
         return json.dumps(data)
 
-    def get_raw_eeg_stats(self):
-        stats = dict()
+    def get_raw_eeg_lengths_as_dictionary(self):
+        lengths = dict()
 
-        # return key value pairs where
-        # key = sensor
-        # value = number of data points
         for key in self.raw_eeg_data.keys():
-            stats[key] = len(self.raw_eeg_data[key])
+            lengths[key] = len(self.raw_eeg_data[key])
 
-        return stats
+        return lengths
+
+    def get_source_tf_lengths_as_dictionary(self):
+        lengths = dict()
+
+        for key in self.source_tf_data.keys():
+            lengths[key] = len(self.source_tf_data[key])
+
+        return lengths
+
+    def get_target_tf_lengths_as_dictionary(self):
+        lengths = dict()
+
+        for key in self.target_tf_data.keys():
+            lengths[key] = len(self.target_tf_data[key])
+
+        return lengths
 
     def get_raw_sensor_data(self, sensor):
         return self.raw_eeg_data[sensor]
@@ -95,5 +109,21 @@ class WorkbenchData:
         data = np.array([self.raw_eeg_data[ch] for ch in ch_names])
 
         return mne.io.RawArray(data, info)
+
+    def get_spectral_density_from_raw_eeg_as_dicitonary(self):
+        spectral_analysis_dicitonary = dict()
+
+        rawarray = self.get_mne_rawarray_from_raw_eeg()
+        psds, freqs = mne.time_frequency.psd.psd_welch(rawarray)
+
+        ch_names = rawarray.ch_names
+
+        spectral_analysis_dicitonary["freqs"] = freqs
+
+        for i in range(len(ch_names)):
+            spectral_analysis_dicitonary[ch_names[i]] = psds[i]
+
+        return spectral_analysis_dicitonary
+
 
 

@@ -1,7 +1,7 @@
 import json
 from workbench.processing.datastructures import *
 
-def parse_json(set_name, uploaded_file):
+def get_workbenchdata_object_from_json(set_name, uploaded_file):
 
     # open the uploaded file
     f = uploaded_file.open()

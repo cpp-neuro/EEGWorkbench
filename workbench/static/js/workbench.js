@@ -200,14 +200,16 @@
 	 */
 	function init_data(ctx, d) {
 		// features to calculate
-		var features = [ "std_deviation", 
-				"msv", 
-				"activity",
-				"mobility",
-				"complexity",
-				"skewness",
-				"kurtosis",
-				"mean" ];
+		var features = [
+			"mean",
+			"std_deviation",
+			"msv",
+			"activity",
+			"mobility",
+			"complexity",
+			"skewness",
+			"kurtosis"
+		];
 
 		// variable to hold the table html
 		var msv_tbl = 0;
@@ -445,6 +447,7 @@
 			action: act };
 			//, classify: classify_param };
 
+		console.log(eeg_params)
 
 			// skipped analysis
 			// TODO: analyze this block of code
@@ -490,7 +493,7 @@
 			}
 			// if the compute button was pressed
 			else {
-				$.ajax({ url: "/get_sensor_data",
+				$.ajax({ url: "/compute_statistics",
 					method: "GET",
 					data: eeg_params}).done(function(r) {
 							var response = JSON.parse(JSON.stringify(r));
@@ -526,16 +529,16 @@
 		// ? grab preloaded json files ?
 		// $.ajax({url: "/json"}).done(refresh_listing);
 
-		$("#band-filters input[type=radio]").each(function(i,e){ $(e).click(switch_chart_band); });
+		// $("#band-filters input[type=radio]").each(function(i,e){ $(e).click(switch_chart_band); });
 		$(eeg_compute_bttn).click(compute_eeg);
 		$(eeg_json_bttn).click(compute_eeg);
-		//$(eeg_matlab_bttn).click(compute_eeg);
+		$(eeg_matlab_bttn).click(compute_eeg);
 		$(eeg_source_bttn).click(load_eeg_set);
 		$(eeg_target_bttn).click(load_eeg_set);
-
-		$(source_chart_bttn).click(view_chart);
-		$(target_chart_bttn).click(view_chart);
-		$(cross_chart_bttn).click(view_chart);
+		//
+		// $(source_chart_bttn).click(view_chart);
+		// $(target_chart_bttn).click(view_chart);
+		// $(cross_chart_bttn).click(view_chart);
 
 	}
 
