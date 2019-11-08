@@ -1,5 +1,5 @@
 from workbench.processing.datastructures import *
-from workbench.processing.parsing import *
+import workbench.processing.parsing as parsing
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http.response import JsonResponse, HttpResponse
@@ -45,7 +45,7 @@ def classify_page(request):
 def upload_file(request):
     if request.method == 'POST' and 'file' in request.FILES.keys():
         file = request.FILES['file']
-        new_data_set = parse_json(file.name, file)
+        new_data_set = parsing.parse_json(file.name, file)
         data_sets.append(new_data_set)
         return redirect('upload')
     return redirect('upload')
@@ -77,18 +77,18 @@ def get_sensor_data(request):
         except Exception as e:
             print(e)
 
-        print(src_sensors)
-        print(tgt_sensors)
+        # print(src_sensors)
+        # print(tgt_sensors)
 
         print(request.GET)
 
         # add data sets to the return container
         # TODO: save the loaded index and retrieve the proper sensor amplitudes
         for sensor in src_sensors:
-            print(sensor)
+            # print(sensor)
             raw_eeg["src"][sensor] = data_sets[0].get_raw_sensor_data(sensor)
         for sensor in tgt_sensors:
-            print(sensor)
+            # print(sensor)
             raw_eeg["tgt"][sensor] = data_sets[0].get_raw_sensor_data(sensor)
 
         # return the dictionary in JSON format

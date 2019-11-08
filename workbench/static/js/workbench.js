@@ -192,7 +192,14 @@
 		return csv;
 	}
 
+	/*
+	Process: build the html for the statistics in d
+
+	d: array of hash_maps
+		d[i] = {sensor: { hjorth: {feature: }}}
+	 */
 	function init_data(ctx, d) {
+		// features to calculate
 		var features = [ "std_deviation", 
 				"msv", 
 				"activity",
@@ -202,9 +209,11 @@
 				"kurtosis",
 				"mean" ];
 
+		// variable to hold the table html
 		var msv_tbl = 0;
 		var set_css_sel = "-set > tbody";
 
+		// select the appropriate css set
 		if (ctx === "source") {
 			set_css_sel = "-source" + set_css_sel;
 		}
@@ -212,9 +221,16 @@
 			set_css_sel = "-target" + set_css_sel;
 		}
 
+		// For each selected feature
 		for (var f = 0; f < features.length; f += 1 ) {
+
+			// find the html for the feature
 			msv_tbl = $("#" + features[f] + set_css_sel);
+
+			// clear the table html
 			msv_tbl.empty();
+
+			// build a table using the statistics in d
 			for (var i = 0; i < d.length; i += 1) {
 				var tr = "<tr>";
 
@@ -225,6 +241,7 @@
 				tr += "<td>" + d[i]["theta"]["hjorth"][features[f]] + "</td>";
 				tr += "</tr>";
 
+				// set the table to the constructed html
 				msv_tbl.html( msv_tbl.html() + tr);
 			}
 
@@ -240,13 +257,17 @@
 
 	// Chart Drawing UX
 	function init_charts() {
-		// show various stats
+
+		// construct and display the stats in current_eeg
+		// as html and display them
 		init_data("source", current_eeg["src"]);
 		init_data("target", current_eeg["tgt"]);
 
-		init_cosinesim( current_eeg["cross"]["cosine_sim"],
-			current_eeg["cross"]["mlp_class"],
-			current_eeg["cross"]["mlp_class"] );
+		console.log(current_eeg);
+
+		// init_cosinesim( current_eeg["cross"]["cosine_sim"],
+		// 	current_eeg["cross"]["mlp_class"],
+		// 	current_eeg["cross"]["mlp_class"] );
 
 		// clear charts first
 		$("#source-self-chart").empty();
@@ -256,9 +277,9 @@
 		$("#target-self-chart").parent().show();
 		$("#eeg-cross-chart").parent().show();
 
-		var cross_dgraph = new Dygraph( document.getElementById("eeg-cross-chart"), 
-			format_csv(current_eeg.cross),
-			{ width: 800 });
+		//var cross_dgraph = new Dygraph( document.getElementById("eeg-cross-chart"),
+		// 	format_csv(current_eeg.cross),
+		// 	{ width: 800 });
 
 		var src_dgraph	= new Dygraph( document.getElementById("source-self-chart"),
 				format_csv(current_eeg.src),
@@ -401,7 +422,7 @@
 		// for each feature in the list of available features, add it
 		// to the desired features used for cross analysis
 		var feature_param	= [];
-		$("input:checkbox[name=feature]:checked").each( function(i,e) { 
+		$("input:checkbox[name=feature]:checked").each( function(i,e) {
 			feature_param.push(e.value); });
 
 		// set the preprocessing algorithm
@@ -474,7 +495,7 @@
 					data: eeg_params}).done(function(r) {
 							var response = JSON.parse(JSON.stringify(r));
 
-							console.log(response);
+							//console.log(response);
 
 							// TODO: discern the format of current eeg hashmap
 							alert("Format current EEG data variable correctly in line 480")

@@ -1,4 +1,6 @@
 import json
+import mne
+import numpy as np
 
 VERSION_KEY = "version"
 SAMPLE_RATE_KEY = "sample_rate"
@@ -81,3 +83,17 @@ class WorkbenchData:
 
     def get_raw_sensor_data(self, sensor):
         return self.raw_eeg_data[sensor]
+
+    def get_mne_rawarray_from_raw_eeg(self, ch_type="mag"):
+
+        # create the necessary metadata for the mne array
+        # more info can be found at https://mne.tools/dev/auto_examples/io/plot_objects_from_arrays.html
+        ch_names = list(self.raw_eeg_data.keys())
+        ch_types = [ch_type] * len(ch_names)
+        info = mne.create_info(ch_names=ch_names, sfreq=self.sample_rate, ch_types=ch_types)
+
+        data = np.array([self.raw_eeg_data[ch] for ch in ch_names])
+
+        return mne.io.RawArray(data, info)
+
+
