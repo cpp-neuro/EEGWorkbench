@@ -43,6 +43,8 @@ def classify_page(request):
 
 
 def upload_file(request):
+    global data_sets
+
     if request.method == 'POST' and 'file' in request.FILES.keys():
         file = request.FILES['file']
         new_data_set = parsing.parse_json(file.name, file)
